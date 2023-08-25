@@ -42,8 +42,8 @@ CREATE TABLE IF NOT EXISTS `LittleLemondb`.`Bookings` (
   CONSTRAINT `CustomerID`
     FOREIGN KEY (`CustomerID`)
     REFERENCES `LittleLemondb`.`CustomerDetails` (`CustomerID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -59,18 +59,6 @@ CREATE TABLE IF NOT EXISTS `LittleLemondb`.`Staff` (
   `Email` VARCHAR(100) NOT NULL,
   `Address` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`EmployeeID`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `LittleLemondb`.`OrderStatus`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `LittleLemondb`.`OrderStatus` (
-  `DeliveryID` INT NOT NULL,
-  `OrderID` INT NOT NULL,
-  `DeliveryStatus` VARCHAR(100) NOT NULL,
-  `DeliveryDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-  PRIMARY KEY (`DeliveryID`))
 ENGINE = InnoDB;
 
 
@@ -97,8 +85,8 @@ CREATE TABLE IF NOT EXISTS `LittleLemondb`.`Menu` (
   CONSTRAINT `TypeID`
     FOREIGN KEY (`TypeID`)
     REFERENCES `LittleLemondb`.`ItemType` (`TypeID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -114,32 +102,43 @@ CREATE TABLE IF NOT EXISTS `LittleLemondb`.`Orders` (
   `Quantity` INT NOT NULL,
   `TotalCost` DECIMAL(10,2) NOT NULL,
   `EmployeeID` INT NOT NULL,
-  `DeliveryID` INT NOT NULL,
   PRIMARY KEY (`OrderID`),
   INDEX `BookingID_idx` (`BookingID` ASC) VISIBLE,
   INDEX `EmployeeID_idx` (`EmployeeID` ASC) VISIBLE,
-  INDEX `DeliveryID_idx` (`DeliveryID` ASC) VISIBLE,
   INDEX `ItemID_idx` (`ItemID` ASC) VISIBLE,
   CONSTRAINT `BookingID`
     FOREIGN KEY (`BookingID`)
     REFERENCES `LittleLemondb`.`Bookings` (`BookingID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `EmployeeID`
     FOREIGN KEY (`EmployeeID`)
     REFERENCES `LittleLemondb`.`Staff` (`EmployeeID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `DeliveryID`
-    FOREIGN KEY (`DeliveryID`)
-    REFERENCES `LittleLemondb`.`OrderStatus` (`DeliveryID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `ItemID`
     FOREIGN KEY (`ItemID`)
     REFERENCES `LittleLemondb`.`Menu` (`ItemID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `LittleLemondb`.`OrderStatus`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `LittleLemondb`.`OrderStatus` (
+  `DeliveryID` INT NOT NULL,
+  `OrderID` INT NOT NULL,
+  `DeliveryStatus` VARCHAR(100) NOT NULL,
+  `DeliveryDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  PRIMARY KEY (`DeliveryID`),
+  INDEX `OrderID_idx` (`OrderID` ASC) VISIBLE,
+  CONSTRAINT `OrderID`
+    FOREIGN KEY (`OrderID`)
+    REFERENCES `LittleLemondb`.`Orders` (`OrderID`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
