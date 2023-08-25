@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `LittleLemondb`.`Orders` (
   `TableNO` INT NOT NULL,
   `ItemID` INT NOT NULL,
   `BookingID` INT NOT NULL,
-  `OrderDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  `OrderDate` DATETIME NOT NULL,
   `Quantity` INT NOT NULL,
   `TotalCost` DECIMAL(10,2) NOT NULL,
   `EmployeeID` INT NOT NULL,
@@ -131,7 +131,7 @@ CREATE TABLE IF NOT EXISTS `LittleLemondb`.`OrderStatus` (
   `DeliveryID` INT NOT NULL,
   `OrderID` INT NOT NULL,
   `DeliveryStatus` VARCHAR(100) NOT NULL,
-  `DeliveryDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  `DeliveryDate` DATETIME NULL,
   PRIMARY KEY (`DeliveryID`),
   INDEX `OrderID_idx` (`OrderID` ASC) VISIBLE,
   CONSTRAINT `OrderID`
